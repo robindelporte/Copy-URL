@@ -78,7 +78,7 @@ MIT
 
 ## 👨‍💻 Auteur
 
-- Robin Delporte
+- Robin Delporte (inspiré par le code de Justa)
 
 ---
 
