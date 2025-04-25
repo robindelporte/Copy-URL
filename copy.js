@@ -10,15 +10,11 @@ if (copyButton) {
     
     let messageWrapper = document.querySelector('[copy-message="message"]');
     if (messageWrapper) {
-      // Si un conteneur de message existe déjà dans le DOM
       if (messageWrapper.style.display === 'none') {
         messageWrapper.style.display = 'block';
       } else if (messageWrapper.classList.contains('hide')) {
         messageWrapper.classList.remove('hide');
       }
-      // Mettre à jour le texte selon la langue
-      messageWrapper.textContent = copyMessage;
-      
       setTimeout(() => {
         if (messageWrapper.style.display === 'block') {
           messageWrapper.style.display = 'none';
@@ -27,11 +23,9 @@ if (copyButton) {
         }
       }, 2000);
     } else {
-      // Créer un nouveau message si aucun conteneur n'existe
-      let messageText = 
+      let messageText =
         document.querySelector('[copy-message]')?.getAttribute('copy-message') ||
-        copyMessage;
-      
+        'Copied!';
       let message = document.createElement('div');
       message.style.position = 'absolute';
       message.style.bottom = '-25px';
@@ -39,16 +33,13 @@ if (copyButton) {
       message.style.display = 'block';
       message.style.whiteSpace = 'nowrap';
       message.setAttribute('id', 'copy-message');
-      message.textContent = messageText;
-      
+      message.textContent = copyMessage;
       let existingMessage = copyButton.querySelector('#copy-message');
       if (!existingMessage) {
         copyButton.insertBefore(message, copyButton.firstChild);
       } else {
         existingMessage.style.display = 'block';
-        existingMessage.textContent = messageText;
       }
-      
       setTimeout(() => {
         (existingMessage || message).style.display = 'none';
       }, 2000);
@@ -58,19 +49,13 @@ if (copyButton) {
 
 /**
  * Détermine le message de copie selon la langue actuelle du site
- * Vous devez adapter cette fonction selon votre méthode de détection de langue
  */
 function getCopyMessageByLanguage() {
-  // Méthode 1: Détecter par l'attribut lang de l'élément html
-  const htmlLang = document.documentElement.lang.toLowerCase();
+  // Détecter par l'attribut lang de l'élément html
+  const htmlLang = document.documentElement.lang?.toLowerCase() || '';
   
-  // Méthode 2: Alternative - détecter par l'URL (décommenter si nécessaire)
-  // const currentUrl = window.location.pathname;
-  // const urlLangMatch = currentUrl.match(/^\/([a-z]{2})(\/|$)/);
-  // const urlLang = urlLangMatch ? urlLangMatch[1].toLowerCase() : '';
-  
-  // Utiliser la langue détectée (préférer htmlLang, sinon urlLang)
-  const currentLang = htmlLang || /* urlLang || */ 'en';
+  // Utiliser la langue détectée ou l'anglais par défaut
+  const currentLang = htmlLang || 'en';
   
   // Dictionnaire des messages par langue
   const messages = {
@@ -84,7 +69,6 @@ function getCopyMessageByLanguage() {
     'zh': '已复制!',
     'ja': 'コピーしました!',
     'ar': 'تم النسخ!'
-    // Ajoutez d'autres langues selon vos besoins
   };
   
   // Retourner le message dans la langue actuelle ou en anglais par défaut
